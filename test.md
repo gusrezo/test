@@ -161,31 +161,26 @@ legend('topright', lty = 1, lwd = 2, col = c("blue", "red"),
 
 The plot shows a more  symmetric distribution than with the original dataset (in fact median = mean), 
 and these values of mean and median are higher than in the original dataset (mean and median of 9354.23 and 1.0395\times 10^{4}). The frequency of the bracket around the mean increases and the frequency of the lowest values decreases.
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+## Are there differences in activity patterns between weekdays and weekends?
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+A column is added indicating where the date of the observation is a weekday or a weekend day. The
+comparison is performed using numbers for every weekday, taking into account that 0-Sunday, 1-Monday.... 6-Saturday (not done with day names since they are locale language depending)
 
 
 ```r
-summary(cars)
+data2 <- data2 %>%
+  mutate(daytype = ifelse(((weekdayasnumber =format(data2$date,"%w")) == "0" | weekdayasnumber== "6"),
+                          "weekend", "weekday"))
+
+data2$daytype = factor(data2$daytype)
+steps_by_interval2 <- data2 %>% group_by(interval,daytype) %>%
+    summarize(meansteps= mean(steps, na.rm = TRUE))
+
+#xyplot( meansteps ~  interval | daytype, data = steps_by_interval2, type="l",layout=c(1,2), 
+ #       ylab = "Number of steps" )
 ```
 
-```
-##      speed           dist       
-##  Min.   : 4.0   Min.   :  2.00  
-##  1st Qu.:12.0   1st Qu.: 26.00  
-##  Median :15.0   Median : 36.00  
-##  Mean   :15.4   Mean   : 42.98  
-##  3rd Qu.:19.0   3rd Qu.: 56.00  
-##  Max.   :25.0   Max.   :120.00
-```
+The plots shows how the pattern is different from weekdays to weekends: weekdays the activity starts earlier, weekends there's a higher average number of steps at late hours.
 
-## Including Plots
-
-You can also embed plots, for example:
-
-![](test_files/figure-html/pressure-1.png)<!-- -->
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+The peak activity is more intense at weekdays than at weekends; weekends the pattern is smoother.
