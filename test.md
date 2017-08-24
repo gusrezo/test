@@ -177,9 +177,11 @@ data2$daytype = factor(data2$daytype)
 steps_by_interval2 <- data2 %>% group_by(interval,daytype) %>%
     summarize(meansteps= mean(steps, na.rm = TRUE))
 
-#xyplot( meansteps ~  interval | daytype, data = steps_by_interval2, type="l",layout=c(1,2), 
- #       ylab = "Number of steps" )
+xyplot( meansteps ~  interval | daytype, data = steps_by_interval2, type="l",layout=c(1,2), 
+       ylab = "Number of steps" )
 ```
+
+![](test_files/figure-html/weekends-1.png)<!-- -->
 
 The plots shows how the pattern is different from weekdays to weekends: weekdays the activity starts earlier, weekends there's a higher average number of steps at late hours.
 

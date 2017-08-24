@@ -8,6 +8,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)  #  for manipulating data frames
+library(lattice)   #for lattice plot, last question of the project
 ```
 ## Loading and preprocessing the data 
 
@@ -164,8 +165,8 @@ data2$daytype = factor(data2$daytype)
 steps_by_interval2 <- data2 %>% group_by(interval,daytype) %>%
     summarize(meansteps= mean(steps, na.rm = TRUE))
 
-#xyplot( meansteps ~  interval | daytype, data = steps_by_interval2, type="l",layout=c(1,2), 
- #       ylab = "Number of steps" )
+xyplot( meansteps ~  interval | daytype, data = steps_by_interval2, type="l",layout=c(1,2), 
+       ylab = "Number of steps" )
 
 ```
 
